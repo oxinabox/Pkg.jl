@@ -726,7 +726,7 @@ function download_source(ctx::Context; readonly=true)
     ##################################################
     # Use LibGit2 to download any remaining packages #
     ##################################################
-    for (pkg, urls, path) in missed_packages
+    asyncmap(missed_packages) do (pkg, urls, path)
         uuid = pkg.uuid
         install_git(ctx.io, pkg.uuid, pkg.name, pkg.tree_hash, urls, path)
         readonly && set_readonly(path)
@@ -1897,3 +1897,4 @@ function get_all_registered_versions(ctx::Types.Context,
 end
 
 end # module
+
